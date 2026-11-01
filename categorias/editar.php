@@ -4,7 +4,7 @@ require_once '../config/conexion.php';
 
 $error = '';
 
-// 1. Verificar que venga un ID válido por la URL
+// Verificar que venga un ID válido 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) {
     $_SESSION['mensaje'] = "ID de categoría inválido.";
@@ -13,7 +13,7 @@ if ($id <= 0) {
     exit;
 }
 
-// 2. Buscar la categoría en la base de datos
+//  Buscar en la base de datos
 $stmt = $pdo->prepare("SELECT id_categoria, nombre, descripcion FROM categoria WHERE id_categoria = :id");
 $stmt->execute([':id' => $id]);
 $categoria = $stmt->fetch();
@@ -25,7 +25,7 @@ if (!$categoria) {
     exit;
 }
 
-// 3. Procesar el formulario si se envió
+//  Procesar el formulario si se envió
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = trim($_POST['nombre']);
     $descripcion = trim($_POST['descripcion']);
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($nombre)) {
         $error = "El nombre de la categoría es obligatorio.";
     } else {
-        // Validación RN01: Verificar que el nombre no esté usado por OTRA categoría
+        // Verificar que el nombre no esté usado 
         $stmt_check = $pdo->prepare("SELECT id_categoria FROM categoria WHERE nombre = :nombre AND id_categoria != :id");
         $stmt_check->execute([':nombre' => $nombre, ':id' => $id]);
         
@@ -60,8 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
-    
-    // Si hubo error, actualizamos los datos en pantalla para no perder lo que el usuario escribió
     $categoria['nombre'] = $nombre;
     $categoria['descripcion'] = $descripcion;
 }
