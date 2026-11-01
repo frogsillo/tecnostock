@@ -1,0 +1,20 @@
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de editores de texto
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de respaldo
+*.save
+*.bak
+
+# Archivos de configuración local (si tuvieras contraseñas reales)
+# config/conexion.local.php
+
+# Dependencias (en este proyecto no usamos, pero es buena práctica)
+/vendor/
+/node_modules/
