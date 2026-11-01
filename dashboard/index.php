@@ -2,19 +2,19 @@
 require_once '../includes/header.php';
 require_once '../config/conexion.php';
 
-// 1. Contar Productos Activos
+// Contar Productos Activos
 $stmt = $pdo->query("SELECT COUNT(*) FROM producto WHERE estado = 1");
 $total_productos = $stmt->fetchColumn();
 
-// 2. Contar Productos con Stock Bajo (RN16)
+//  Contar Productos con Stock Bajo 
 $stmt = $pdo->query("SELECT COUNT(*) FROM producto WHERE stock_actual < stock_minimo AND estado = 1");
 $total_stock_bajo = $stmt->fetchColumn();
 
-// 3. Contar Categorías Activas
+//  Contar Categorías Activas
 $stmt = $pdo->query("SELECT COUNT(*) FROM categoria WHERE estado = 1");
 $total_categorias = $stmt->fetchColumn();
 
-// 4. Traer los últimos 5 movimientos
+//  Traer los últimos 5 movimientos
 $sql_movs = "SELECT m.fecha_hora, m.tipo, m.cantidad, p.nombre AS producto 
              FROM movimiento m 
              INNER JOIN producto p ON m.id_producto = p.id_producto 
