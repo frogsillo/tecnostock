@@ -1,4 +1,4 @@
-# Archivos temporales del sistema operativo
+# Archivos temporales sistema 
 .DS_Store
 Thumbs.db
 
@@ -12,9 +12,9 @@ Thumbs.db
 *.save
 *.bak
 
-# Archivos de configuración local (si tuvieras contraseñas reales)
+# Archivos de configuración local 
 # config/conexion.local.php
 
-# Dependencias (en este proyecto no usamos, pero es buena práctica)
+# Dependencias (en este proyecto no usamos jejeje)
 /vendor/
 /node_modules/
