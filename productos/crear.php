@@ -7,7 +7,7 @@ $codigo = $nombre = $descripcion = '';
 $precio = $stock_actual = $stock_minimo = 0;
 $id_categoria = '';
 
-// Traemos las categorías activas para el dropdown
+// Traemos las categorías activas 
 $stmt_cat = $pdo->query("SELECT id_categoria, nombre FROM categoria WHERE estado = 1 ORDER BY nombre ASC");
 $categorias = $stmt_cat->fetchAll();
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (!is_numeric($precio) || $precio < 0 || !is_numeric($stock_actual) || $stock_actual < 0 || !is_numeric($stock_minimo) || $stock_minimo < 0) {
         $error = "El precio y los stocks deben ser números mayores o iguales a cero."; // RN02
     } else {
-        // Validación RN01: Código Único
+        // Validación Código Único
         $stmt_check = $pdo->prepare("SELECT id_producto FROM producto WHERE codigo = :codigo");
         $stmt_check->execute([':codigo' => $codigo]);
         
