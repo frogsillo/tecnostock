@@ -4,7 +4,7 @@ require_once '../config/conexion.php';
 
 $error = '';
 
-// 1. Verificar que venga un ID válido
+//  Verificar que venga un ID válido
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) {
     $_SESSION['mensaje'] = "ID de producto inválido.";
@@ -13,7 +13,7 @@ if ($id <= 0) {
     exit;
 }
 
-// 2. Buscar el producto en la base de datos
+//  Buscar el producto en la base de datos
 $stmt = $pdo->prepare("SELECT * FROM producto WHERE id_producto = :id");
 $stmt->execute([':id' => $id]);
 $producto = $stmt->fetch();
@@ -25,11 +25,11 @@ if (!$producto) {
     exit;
 }
 
-// Traemos todas las categorías para el dropdown
+// Traemos todas las categorías 
 $stmt_cat = $pdo->query("SELECT id_categoria, nombre, estado FROM categoria ORDER BY nombre ASC");
 $categorias = $stmt_cat->fetchAll();
 
-// 3. Procesar el formulario
+// Procesar el formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $codigo = trim($_POST['codigo']);
     $nombre = trim($_POST['nombre']);
@@ -39,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stock_minimo = $_POST['stock_minimo'];
     $id_categoria = $_POST['id_categoria'];
 
-    // Validaciones (RN01 y RN02)
+    // Validaciones 
     if (empty($codigo) || empty($nombre) || empty($id_categoria)) {
         $error = "El código, nombre y categoría son obligatorios.";
     } elseif (!is_numeric($precio) || $precio < 0 || !is_numeric($stock_actual) || $stock_actual < 0 || !is_numeric($stock_minimo) || $stock_minimo < 0) {
         $error = "El precio y los stocks deben ser números mayores o iguales a cero.";
     } else {
-        // Verificar que el código no esté duplicado en OTRO producto
+        // Verificar que el código no esté duplicado 
         $stmt_check = $pdo->prepare("SELECT id_producto FROM producto WHERE codigo = :codigo AND id_producto != :id");
         $stmt_check->execute([':codigo' => $codigo, ':id' => $id]);
         
