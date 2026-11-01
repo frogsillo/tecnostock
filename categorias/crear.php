@@ -13,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($nombre)) {
         $error = "El nombre de la categoría es obligatorio.";
     } else {
-        // Validación RN01: Verificar que el nombre no exista
+        // Verificar que el nombre no exista
         $stmt_check = $pdo->prepare("SELECT id_categoria FROM categoria WHERE nombre = :nombre");
         $stmt_check->execute([':nombre' => $nombre]);
         
         if ($stmt_check->fetch()) {
             $error = "Ya existe una categoría con ese nombre.";
         } else {
-            // Insertar la nueva categoría de forma segura
+            // Insertar la nueva categoría 
             $sql = "INSERT INTO categoria (nombre, descripcion, estado) VALUES (:nombre, :descripcion, 1)";
             $stmt = $pdo->prepare($sql);
             
@@ -42,8 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
-<!-- Contenido del formulario -->
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
         <div class="d-flex justify-content-between align-items-center mb-4">

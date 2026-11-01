@@ -1,16 +1,11 @@
 <?php
 session_start();
-
-// Si el usuario ya está logueado, lo redirigimos al dashboard
 if (isset($_SESSION['id_usuario'])) {
     header("Location: ../dashboard/index.php");
     exit;
 }
-
 require_once '../config/conexion.php';
-
 $error = '';
-
 // Verificamos si se envió el formulario
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correo = trim($_POST['correo']);
@@ -19,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($correo) || empty($clave)) {
         $error = "Por favor, complete todos los campos.";
     } else {
-        // Buscamos el usuario por correo (usando consulta preparada)
+        // Buscamos el usuario por correo 
         $sql = "SELECT id_usuario, nombre, clave, estado FROM usuario WHERE correo = :correo LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':correo' => $correo]);
@@ -33,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['id_usuario'] = $usuario['id_usuario'];
                 $_SESSION['nombre']     = $usuario['nombre'];
                 
-                // Redirigimos al dashboard (lo crearemos más adelante)
+                // Redirigimos al dashboard 
                 header("Location: ../dashboard/index.php");
                 exit;
             } else {

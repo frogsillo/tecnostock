@@ -1,15 +1,7 @@
--- ============================================
--- TecnoStock - Script de base de datos
--- Ejecutar en phpMyAdmin o por terminal MySQL
--- ============================================
-
 DROP DATABASE IF EXISTS tecnostock;
 CREATE DATABASE tecnostock CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE tecnostock;
 
--- --------------------------------------------
--- Tabla: usuario
--- --------------------------------------------
 CREATE TABLE usuario (
     id_usuario INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombre     VARCHAR(100) NOT NULL,
@@ -18,9 +10,7 @@ CREATE TABLE usuario (
     estado     TINYINT(1)   NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------
--- Tabla: categoria
--- --------------------------------------------
+
 CREATE TABLE categoria (
     id_categoria INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombre       VARCHAR(100) NOT NULL UNIQUE,
@@ -28,9 +18,7 @@ CREATE TABLE categoria (
     estado       TINYINT(1)   NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------
--- Tabla: producto
--- --------------------------------------------
+
 CREATE TABLE producto (
     id_producto   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     codigo        VARCHAR(50)  NOT NULL UNIQUE,
@@ -46,9 +34,6 @@ CREATE TABLE producto (
         REFERENCES categoria(id_categoria) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------
--- Tabla: movimiento
--- --------------------------------------------
 CREATE TABLE movimiento (
     id_movimiento INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     fecha_hora    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -65,13 +50,6 @@ CREATE TABLE movimiento (
     INDEX idx_movimiento_fecha (fecha_hora)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------
--- Datos de prueba
--- --------------------------------------------
-
--- Usuario: encargado@tecnostock.com / contraseña: password
--- (El hash corresponde a la palabra "password"; en ETAPA 4 lo cambiaremos
---  por uno propio usando password_hash()).
 INSERT INTO usuario (nombre, correo, clave, estado) VALUES
 ('Encargado de Inventario', 'encargado@tecnostock.com',
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1);

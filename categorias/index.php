@@ -1,10 +1,10 @@
 <?php
-// Incluimos el header (protección, menú, estilos)
+// Inclui el header 
 require_once '../includes/header.php';
-// Incluimos la conexión a la base de datos
+// Incluila conexión a la base de datos
 require_once '../config/conexion.php';
 
-// Lógica para mostrar mensajes (por ejemplo, si se creó una categoría)
+// Lógica para mostrar mensajes 
 $mensaje = $_SESSION['mensaje'] ?? '';
 $tipo_alerta = $_SESSION['tipo_alerta'] ?? 'success';
 unset($_SESSION['mensaje'], $_SESSION['tipo_alerta']);

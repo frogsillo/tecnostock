@@ -2,7 +2,7 @@
 require_once '../includes/header.php';
 require_once '../config/conexion.php';
 
-// 1. Verificar que el ID sea válido
+// ID  válido
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id <= 0) {
@@ -12,7 +12,7 @@ if ($id <= 0) {
     exit;
 }
 
-// 2. Verificar si la categoría existe
+// categoría existe ono
 $stmt = $pdo->prepare("SELECT id_categoria, estado FROM categoria WHERE id_categoria = :id");
 $stmt->execute([':id' => $id]);
 $categoria = $stmt->fetch();
@@ -23,9 +23,7 @@ if (!$categoria) {
     header("Location: index.php");
     exit;
 }
-
-// 3. REGLA DE NEGOCIO: Verificar si tiene productos asociados
-// Contamos cuántos productos pertenecen a esta categoría
+// cuántos productos pertenecen a esta categoría
 $stmt_prod = $pdo->prepare("SELECT COUNT(*) FROM producto WHERE id_categoria = :id");
 $stmt_prod->execute([':id' => $id]);
 $cantidad_productos = $stmt_prod->fetchColumn();
@@ -38,7 +36,7 @@ if ($cantidad_productos > 0) {
     exit;
 }
 
-// 4. Si no tiene productos, procedemos a desactivar (estado = 0)
+// 4. Si no tiene productos, procedemos a desactivar )
 $stmt_update = $pdo->prepare("UPDATE categoria SET estado = 0 WHERE id_categoria = :id");
 $stmt_update->execute([':id' => $id]);
 

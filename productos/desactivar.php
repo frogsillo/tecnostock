@@ -2,7 +2,7 @@
 require_once '../includes/header.php';
 require_once '../config/conexion.php';
 
-// 1. Verificar que el ID sea válido
+//  Verificar que el ID sea válido
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id <= 0) {
@@ -12,7 +12,7 @@ if ($id <= 0) {
     exit;
 }
 
-// 2. Verificar si el producto existe
+//  Verificar si el producto existe
 $stmt = $pdo->prepare("SELECT id_producto, estado FROM producto WHERE id_producto = :id");
 $stmt->execute([':id' => $id]);
 $producto = $stmt->fetch();
@@ -24,7 +24,7 @@ if (!$producto) {
     exit;
 }
 
-// 3. Si ya está inactivo, no hacemos nada (por seguridad)
+//  Si ya está inactivo, no hacemos nada 
 if ($producto['estado'] == 0) {
     $_SESSION['mensaje'] = "El producto ya se encuentra inactivo.";
     $_SESSION['tipo_alerta'] = "warning";
@@ -32,8 +32,8 @@ if ($producto['estado'] == 0) {
     exit;
 }
 
-// 4. Procedemos a desactivar (estado = 0) en lugar de hacer un DELETE
-// Esto cumple con la RN05: conservar los movimientos históricos.
+//  Procedemos a desactivar en lugar de hacer un DELETE
+// Esto cumple con la  conservar los movimientos históricos.
 $stmt_update = $pdo->prepare("UPDATE producto SET estado = 0 WHERE id_producto = :id");
 $stmt_update->execute([':id' => $id]);
 

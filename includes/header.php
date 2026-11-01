@@ -1,8 +1,5 @@
 <?php
-// Protegemos la página. Cualquier archivo que incluya este header pedirá login.
 require_once __DIR__ . '/../auth/proteger.php';
-
-// Obtenemos el nombre del archivo actual para resaltar la pestaña activa en el menú
 $archivo_actual = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>

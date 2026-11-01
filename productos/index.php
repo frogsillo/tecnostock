@@ -2,20 +2,20 @@
 require_once '../includes/header.php';
 require_once '../config/conexion.php';
 
-// Lógica para mostrar mensajes (éxito, error, advertencia)
+// Lógica para mostrar mensajes
 $mensaje = $_SESSION['mensaje'] ?? '';
 $tipo_alerta = $_SESSION['tipo_alerta'] ?? 'success';
 unset($_SESSION['mensaje'], $_SESSION['tipo_alerta']);
 
-// Capturamos el término de búsqueda (si existe)
+// Capturamos el término de búsqueda
 $buscar = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
-// Preparamos la consulta base con JOIN
+// Preparamos la consulta con JOIN
 $sql = "SELECT p.id_producto, p.codigo, p.nombre, p.precio, p.stock_actual, p.stock_minimo, p.estado, c.nombre AS categoria 
         FROM producto p 
         INNER JOIN categoria c ON p.id_categoria = c.id_categoria";
 
-// Si hay búsqueda, agregamos el WHERE (usando 3 parámetros distintos)
+// Si hay búsqueda, agregamos el WHERE
 if ($buscar !== '') {
     $sql .= " WHERE p.nombre LIKE :buscar1 OR p.codigo LIKE :buscar2 OR c.nombre LIKE :buscar3";
 }
@@ -44,7 +44,7 @@ $productos = $stmt->fetchAll();
     <a href="crear.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Nuevo Producto</a>
 </div>
 
-<!-- Alerta de mensajes (éxito, error o advertencia) -->
+<!-- Alerta de mensajes -->
 <?php if ($mensaje): ?>
     <div class="alert alert-<?= $tipo_alerta ?> alert-dismissible fade show shadow-sm">
         <?= htmlspecialchars($mensaje) ?>
