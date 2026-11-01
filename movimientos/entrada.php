@@ -7,7 +7,7 @@ $id_producto = '';
 $cantidad = 1;
 $observacion = '';
 
-// Traemos los productos ACTIVOS para el dropdown
+// Traemos los productos ACTIVOS 
 $stmt_prod = $pdo->query("SELECT id_producto, codigo, nombre, stock_actual FROM producto WHERE estado = 1 ORDER BY nombre ASC");
 $productos = $stmt_prod->fetchAll();
 
@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cantidad = intval($_POST['cantidad']);
     $observacion = trim($_POST['observacion']);
 
-    // Validaciones (RN02 y campos obligatorios)
+    // Validaciones 
     if ($id_producto <= 0 || empty($cantidad)) {
         $error = "Debe seleccionar un producto y una cantidad válida.";
     } elseif ($cantidad <= 0) {
         $error = "La cantidad debe ser mayor a cero.";
     } else {
         try {
-            // INICIO DE LA TRANSACCIÓN (RN06)
+            // INICIO DE LA TRANSACCIÓN 
             $pdo->beginTransaction();
 
             // 1. Registrar el movimiento
@@ -34,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':cantidad' => $cantidad,
                 ':observacion' => empty($observacion) ? null : $observacion,
                 ':id_producto' => $id_producto,
-                ':id_usuario' => $_SESSION['id_usuario'] // RN03: Usuario responsable
+                ':id_usuario' => $_SESSION['id_usuario'] // Usuario responsable
             ]);
 
-            // 2. Actualizar el stock del producto
+            //  Actualizar el stock del producto
             $sql_stock = "UPDATE producto SET stock_actual = stock_actual + :cantidad WHERE id_producto = :id_producto";
             $stmt_stock = $pdo->prepare($sql_stock);
             $stmt_stock->execute([
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':id_producto' => $id_producto
             ]);
 
-            // 3. Confirmar la transacción (si llegamos aquí, todo salió bien)
+            //  Confirmar la transacción (si llegamos aquí, todo salió bien)
             $pdo->commit();
 
             $_SESSION['mensaje'] = "Entrada de stock registrada correctamente.";
