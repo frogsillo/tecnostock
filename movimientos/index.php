@@ -2,7 +2,7 @@
 require_once '../includes/header.php';
 require_once '../config/conexion.php';
 
-// Traemos todos los movimientos haciendo JOIN con producto y usuario
+// Traemos todos los movimientos connn producto y usuario
 $sql = "SELECT m.id_movimiento, m.fecha_hora, m.tipo, m.cantidad, m.observacion, 
                p.codigo AS codigo_producto, p.nombre AS nombre_producto, 
                u.nombre AS nombre_usuario 
