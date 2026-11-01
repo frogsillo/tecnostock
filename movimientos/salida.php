@@ -7,7 +7,7 @@ $id_producto = '';
 $cantidad = 1;
 $observacion = '';
 
-// Traemos los productos ACTIVOS para el dropdown
+// Traemos los productos ACTIVOS 
 $stmt_prod = $pdo->query("SELECT id_producto, codigo, nombre, stock_actual FROM producto WHERE estado = 1 ORDER BY nombre ASC");
 $productos = $stmt_prod->fetchAll();
 
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cantidad = intval($_POST['cantidad']);
     $observacion = trim($_POST['observacion']);
 
-    // Validaciones básicas
+    // Validaciones 
     if ($id_producto <= 0 || empty($cantidad)) {
         $error = "Debe seleccionar un producto y una cantidad válida.";
     } elseif ($cantidad <= 0) {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // INICIO DE LA TRANSACCIÓN
             $pdo->beginTransaction();
 
-            // 1. Consultar el stock actual del producto (con bloqueo para evitar condiciones de carrera)
+            // Consultar el stock actual del producto 
             $stmt_check = $pdo->prepare("SELECT stock_actual FROM producto WHERE id_producto = :id FOR UPDATE");
             $stmt_check->execute([':id' => $id_producto]);
             $prod_actual = $stmt_check->fetch();
@@ -35,12 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 throw new Exception("El producto seleccionado no existe.");
             }
 
-            // 2. Aplicar la regla de negocio RN04 (No stock negativo)
+            //  Aplicar la regla de negocio
             if ($cantidad > $prod_actual['stock_actual']) {
                 throw new Exception("Stock insuficiente. Solo hay " . $prod_actual['stock_actual'] . " unidades disponibles.");
             }
 
-            // 3. Registrar el movimiento de salida
+            // Registrar el movimiento de salida
             $sql_mov = "INSERT INTO movimiento (tipo, cantidad, observacion, id_producto, id_usuario) 
                         VALUES ('salida', :cantidad, :observacion, :id_producto, :id_usuario)";
             $stmt_mov = $pdo->prepare($sql_mov);
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':id_usuario' => $_SESSION['id_usuario']
             ]);
 
-            // 4. Actualizar el stock (Restar la cantidad)
+            // Actualizar el stock 
             $sql_stock = "UPDATE producto SET stock_actual = stock_actual - :cantidad WHERE id_producto = :id_producto";
             $stmt_stock = $pdo->prepare($sql_stock);
             $stmt_stock->execute([
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
 
         } catch (Exception $e) {
-            // Si hay CUALQUIER error (o falta de stock), deshacemos los cambios
+            // Si hay CUALQUIER error deshacemos los cambios
             $pdo->rollBack();
             $error = $e->getMessage();
         }
