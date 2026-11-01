@@ -3,24 +3,24 @@
 $host     = 'localhost';
 $dbname   = 'tecnostock';
 $usuario  = 'root';
-$clave    = ''; // En XAMPP por defecto el root no tiene contraseña
+$clave    = ''; 
 
 try {
-    // DSN (Data Source Name): indica el motor, el host, la BD y el charset
+    // DSN (Data Source Name): 
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
     
     // Opciones de PDO para seguridad y manejo de errores
     $opciones = [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Lanza excepciones si hay errores
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Devuelve los datos como arrays asociativos
-        PDO::ATTR_EMULATE_PREPARES   => false,                  // Usa consultas preparadas reales (seguridad)
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, 
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,      
+        PDO::ATTR_EMULATE_PREPARES   => false,                  
     ];
 
     // Creamos la conexión
     $pdo = new PDO($dsn, $usuario, $clave, $opciones);
 
 } catch (PDOException $e) {
-    // Si hay un error, detenemos todo y mostramos el mensaje
+    // Si hay un error, detenemos todo 
     die("Error crítico de conexión a la base de datos: " . $e->getMessage());
 }
 ?>
